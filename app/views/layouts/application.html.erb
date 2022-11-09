@@ -14,3 +14,93 @@
     <%= yield %>
   </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>エステサロン向け 無料ホームページテンプレート esthe4</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ここにサイト説明を入れます">
+<%= csrf_meta_tags %>
+<%= csp_meta_tag %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vegas/2.5.4/vegas.min.css">
+
+<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+<%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+<%= javascript_pack_tag 'main', 'data-turbolinks-track': 'reload' %>
+<%= javascript_pack_tag 'vegas', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body class="home">
+
+<div id="container">
+
+<header>
+
+<h1 id="logo"><a href="index.html"><img src="images/logo.png" alt="Esthetic Salon"></a></h1>
+
+<!--メインメニュー-->
+<nav id="menubar">
+<ul>
+<li><a href="index.html">ホーム<span>Home</span></a></li>
+<li><a href="course.html">コース<span>Course</span></a></li>
+<li><a href="faq.html">よく頂くご質問<span>Faq</span></a></li>
+<li><a href="access.html">アクセス<span>Access</span></a></li>
+</ul>
+
+<address>
+<h3>お問い合わせ</h3>
+<span class="tel"><i class="fas fa-phone-volume"></i>0120-000-000</span>
+<p class="btn"><a href="contact.html"><i class="far fa-envelope"></i>お問合せフォーム</a></p>
+</address>
+
+</nav>
+
+</header>
+
+<div id="contents">
+
+<main>
+
+<%= yield %>
+
+<ul id="footermenu">
+<li><a href="index.html">ホーム</a></li>
+<li><a href="company.html">会社概要</a></li>
+</ul>
+
+<footer>
+<small>Copyright&copy; <a href="index.html">Esthetic Salon</a> All Rights Reserved.</small>
+<span class="pr"><a href="https://template-party.com/" target="_blank">《Web Design : Template-Party》</a></span>
+</footer>
+
+</main>
+
+</div>
+<!--/#contents-->
+
+</div>
+<!--/#container-->
+
+<!--スライドショー-->
+<div id="mainimg"></div>
+
+<!--jQueryの読み込み-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!--スライドショー（vegas）-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vegas/2.5.4/vegas.min.js"></script>
+<script src="js/vegas.js"></script>
+
+<!--esthe4用のスクリプト-->
+<script src="js/main.js"></script>
+
+<!--ハンバーガーボタン（開閉操作のボタン）-->
+<div id="menubar_hdr"></div>
+
+<!--ページの上部へ戻るボタン-->
+<div class="pagetop"><a href="#"><i class="fas fa-angle-double-up"></i></a></div>
+
+</body>
+</html>
