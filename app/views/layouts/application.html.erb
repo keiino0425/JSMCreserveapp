@@ -12,7 +12,6 @@
 <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
 <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 <%= javascript_pack_tag 'main', 'data-turbolinks-track': 'reload' %>
-<%= javascript_pack_tag 'vegas', 'data-turbolinks-track': 'reload' %>
 </head>
 
 <body class="home">
@@ -21,7 +20,7 @@
 
 <header>
 
-<h1 id="logo"><a href="index.html"><img src="images/logo.png" alt="Esthetic Salon"></a></h1>
+<h1 id="logo"><%= image_tag 'logo.png', alt:'ロゴ画像' %></h1>
 
 <!--メインメニュー-->
 <nav id="menubar">
@@ -67,14 +66,10 @@
 <!--/#container-->
 
 <!--スライドショー-->
-<div id="mainimg"></div>
+<div id="mainimg"><%= image_tag 'main.jpeg', alt:'メイン画像' %></div>
 
 <!--jQueryの読み込み-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-<!--スライドショー（vegas）-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vegas/2.5.4/vegas.min.js"></script>
-<script src="js/vegas.js"></script>
 
 <!--esthe4用のスクリプト-->
 <script src="js/main.js"></script>
