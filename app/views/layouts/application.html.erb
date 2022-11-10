@@ -25,10 +25,9 @@
 <!--メインメニュー-->
 <nav id="menubar">
 <ul>
-<li><a href="index.html">ホーム<span>Home</span></a></li>
-<li><a href="course.html">コース<span>Course</span></a></li>
-<li><a href="faq.html">よく頂くご質問<span>Faq</span></a></li>
-<li><a href="access.html">アクセス<span>Access</span></a></li>
+<li><%= link_to "マイページ", user_path(:id) %></li>
+<li><%= link_to "カリキュラム予約", user_path(:id) %></li>
+<li><%= link_to "e-ラーニング", user_path(:id) %></li>
 </ul>
 
 <address>
