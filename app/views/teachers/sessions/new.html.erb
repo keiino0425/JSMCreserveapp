@@ -1,4 +1,4 @@
-<h2>ログイン</h2>
+<h2>講師ログイン</h2>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="field">
@@ -23,6 +23,6 @@
   </div>
 <% end %>
 
-<%= link_to "講師専用ページはこちら", new_teacher_session_path %>
+<%= link_to "生徒様ログインページはこちら", new_user_session_path %>
 
-<%= render "users/shared/links" %>
+<%= render "teachers/shared/links" %>
