@@ -1,0 +1,19 @@
+<section>
+
+<h2>講師を選ぶ</h2>
+
+<div class="list-container">
+
+<% @teachers.each do |teacher| %>
+<div class="list">
+	<figure><%= image_tag "teacher.jpeg", class: "講師の写真" %></figure>
+	<div>
+	<h4><%= link_to teacher.teacher_name, "#" %></h4>
+	<p>ここに説明を書きます。サンプルテキスト。ここに説明を書きます。サンプルテキスト。ここに説明を書きます。サンプルテキスト。</p>
+	</div>
+</div>
+<% end %>
+</div>
+<!--/.list-container-->
+
+</section>

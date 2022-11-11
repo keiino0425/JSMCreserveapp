@@ -10,5 +10,6 @@ Rails.application.routes.draw do
   resources :users
   resources :teachers
   resources :reservations
+  get 'users/:id/choice', to: 'users#choice'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
