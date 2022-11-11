@@ -9,6 +9,21 @@
   </div>
 
   <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :user_name, autocomplete: "名前" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :area %><br />
+    <%= f.text_field :user_area, autocomplete: "東京都" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :curriculum %><br />
+    <%= f.radio_button :curriculum, "ヘッドスパ" %>ヘッドスパ<%= f.radio_button :curriculum, "ドライヘッドスパ" %>ドライヘッドスパ
+  </div>
+
+  <div class="field">
     <%= f.label :password %>
     <% if @minimum_password_length %>
     <em><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></em>
