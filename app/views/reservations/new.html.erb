@@ -4,7 +4,7 @@
       <h1>新規予約画面</h1>
     </div>
     <div class="col-12 mt-3 content">
-      <%= form_with model: @reservation, local: true, class: 'form' do |form| %>
+    <%= form_with model: @reservation, url: user_teacher_reservations_path, local: true, class: 'form' do |form| %>
       <div class="day form-group">
         <%= form.label :day, '日付' %>
         <%= form.text_field :day, class: 'form-control', value: @day, readonly: true %>
@@ -13,6 +13,10 @@
         <%= form.label :time, '時間' %>
         <%= form.text_field :time, class: 'form-control', value: @time, readonly: true %>
       </div>
+      <div class="time form-group">
+        <%= form.label :time, '講師ID' %>
+        <%= form.text_field :teacher_id, class: 'form-control', value: @teacher_id, readonly: true %>
+      </div>
       <%= form.hidden_field :user_id, value: current_user.id %>
       <%= form.hidden_field :start_time, value: @start_time %>
       <div class="submit">
@@ -20,7 +24,7 @@
       </div>
     <% end %>
     <div class="col-12 text-right">
-      <%= link_to '戻る', reservations_path %>
+      <%= link_to '戻る', user_teacher_reservations_path %>
     </div>
     </div>
   </div>

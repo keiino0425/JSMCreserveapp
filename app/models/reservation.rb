@@ -1,4 +1,6 @@
 class Reservation < ApplicationRecord
+  belongs_to :user
+  belongs_to :teacher
   def self.reservations_after_three_month
     # 今日から3ヶ月先までのデータを取得
     reservations = Reservation.all.where("day >= ?", Date.current).where("day < ?", Date.current >> 3).order(day: :desc)

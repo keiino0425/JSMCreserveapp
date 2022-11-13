@@ -4,7 +4,4 @@ class UsersController < ApplicationController
   def show
   end
 
-  def choice
-    @teachers = Teacher.all
-  end
 end

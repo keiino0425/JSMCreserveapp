@@ -7,9 +7,11 @@ Rails.application.routes.draw do
     sessions:      'users/sessions',
     registrations: 'users/registrations'
   }
-  resources :users
-  resources :teachers
-  resources :reservations
-  get 'users/:id/choice', to: 'users#choice'
+  resources :users do
+    resources :teachers do
+      resources :reservations
+    end
+    get '/choice', to: 'reservations#choice'
+  end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

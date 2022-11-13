@@ -32,7 +32,7 @@
 <% else %>
   <ul>
   <li><%= link_to "マイページ", user_path(:id) %></li>
-  <li><%= link_to "カリキュラム予約", '/users/id/choice' %></li>
+  <li><%= link_to "カリキュラム予約", user_choice_path(:user_id) %></li>
   <li><%= link_to "e-ラーニング", user_path(:id) %></li>
   </ul>
 <% end %>
