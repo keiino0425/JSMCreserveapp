@@ -17,6 +17,7 @@ class ReservationsController < ApplicationController
     @time = params[:time]
     @teacher_id = params[:teacher_id]
     @start_time = DateTime.parse(@day + " " + @time + " " + "JST")
+    @end_time = @start_time + 90.minutes
   end
 
   def show
@@ -34,6 +35,6 @@ class ReservationsController < ApplicationController
 
   private
   def reservation_params
-    params.require(:reservation).permit(:day, :time, :user_id, :teacher_id, :start_time)
+    params.require(:reservation).permit(:day, :time, :user_id, :teacher_id, :start_time, :end_time)
   end
 end

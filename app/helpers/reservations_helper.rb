@@ -25,14 +25,13 @@ module ReservationsHelper
   def check_reservation(reservations, day, time)
     result = false
     reservations_count = reservations.count
-    # 取得した予約データにdayとtimeが一致する場合はtrue,一致しない場合はfalseを返します
     if reservations_count > 1
       reservations.each do |reservation|
-        result = reservation[:day].eql?(day.strftime("%Y-%m-%d")) && reservation[:time].eql?(time)
+        result = reservation[:start_time] <= Time.zone.parse(day + " " + time + " " + "JST") && Time.zone.parse(day + " " + time + " " + "JST") <= reservation[:end_time]
         return result if result
       end
     elsif reservations_count == 1
-      result = reservations[0][:day].eql?(day.strftime("%Y-%m-%d")) && reservations[0][:time].eql?(time)
+      result = reservations[0][:start_time] <= Time.zone.parse(day + " " + time + " " + "JST") && Time.zone.parse(day + " " + time + " " + "JST") <= reservations[0][:end_time]
       return result if result
     end
     return result
