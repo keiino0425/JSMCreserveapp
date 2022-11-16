@@ -16,7 +16,7 @@ class ReservationsController < ApplicationController
     @day = params[:day]
     @time = params[:time]
     @teacher_id = params[:teacher_id]
-    @start_time = DateTime.parse(@day + " " + @time + " " + "JST")
+    @start_time = Time.zone.parse(@day + " " + @time + " " + "JST")
     @end_time = @start_time + 90.minutes
   end
 

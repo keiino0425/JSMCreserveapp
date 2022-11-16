@@ -9,7 +9,7 @@ class Reservation < ApplicationRecord
     reservation_data = []
     reservations.each do |reservation|
       reservations_hash = {}
-      reservations_hash.merge!(day: reservation.day.strftime("%Y-%m-%d"), time: reservation.time)
+      reservations_hash.merge!(day: reservation.day.strftime("%Y-%m-%d"), time: reservation.time, start_time: reservation.start_time, end_time: reservation.end_time)
       reservation_data.push(reservations_hash)
     end
     reservation_data
