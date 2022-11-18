@@ -22,10 +22,18 @@ class ReservationsController < ApplicationController
     @teacher_id = params[:teacher_id]
     @start_time = Time.zone.parse(params[:day] + " " + params[:time] + " " + "JST")
     @end_time = @start_time + 90.minutes
+    message = Reservation.check_reservation_day(@start_time)
+    if !!message
+      redirect_to user_teacher_reservations_path(@user.id, @teacher.id), flash: { alert: message }
+    end
   end
 
   def teacher_new
     @reservation = Reservation.new(reservation_teacher_params)
+    message = Reservation.check_reservation_day(@reservation.start_time)
+    if !!message
+      redirect_to teacher_reservations_index_path(current_teacher.id), flash: { alert: message }
+    end
   end
 
   def show
