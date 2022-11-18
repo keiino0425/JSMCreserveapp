@@ -11,6 +11,7 @@ module ReservationsHelper
              "13:00",
              "13:30",
              "14:00",
+             "14:30",
              "15:00",
              "15:30",
              "16:00",
@@ -18,6 +19,7 @@ module ReservationsHelper
              "17:00",
              "17:30",
              "18:00",
+             "18:30",
              "19:00",
              "19:30",
              "20:00"
@@ -29,11 +31,11 @@ module ReservationsHelper
     reservations_count = reservations.count
     if reservations_count > 1
       reservations.each do |reservation|
-        result = reservation[:start_time] <= Time.zone.parse(day.to_s + " " + time + " " + "JST") && Time.zone.parse(day.to_s + " " + time + " " + "JST") <= reservation[:end_time]
+        result = reservation[:start_time] <= Time.zone.parse(day.to_s + " " + time + " " + "JST") && Time.zone.parse(day.to_s + " " + time + " " + "JST") < reservation[:end_time]
         return result if result
       end
     elsif reservations_count == 1
-      result = reservations[0][:start_time] <= Time.zone.parse(day.to_s + " " + time + " " + "JST") && Time.zone.parse(day.to_s + " " + time + " " + "JST") <= reservations[0][:end_time]
+      result = reservations[0][:start_time] <= Time.zone.parse(day.to_s + " " + time + " " + "JST") && Time.zone.parse(day.to_s + " " + time + " " + "JST") < reservations[0][:end_time]
       return result if result
     end
     return result

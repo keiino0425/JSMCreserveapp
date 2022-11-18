@@ -1,7 +1,7 @@
 class ReservationsController < ApplicationController
   before_action :authenticate_user!, except: [:teacher_index, :teacher_new, :teacher_create]
   def index
-    @reservations = Reservation.all.where("day >= ?", Date.current).where("day < ?", Date.current >> 3).where(teacher_id: params[:teacher_id]).order(day: :desc)
+    @reservations = Reservation.all.where("start_time >= ?", Date.current).where("start_time < ?", Date.current >> 3).where(teacher_id: params[:teacher_id]).order(start_time: :desc)
     @teacher = Teacher.find(params[:teacher_id])
   end
 
@@ -18,10 +18,8 @@ class ReservationsController < ApplicationController
     @user = current_user
     @teacher = Teacher.find(params[:teacher_id])
     @reservation = Reservation.new
-    @day = params[:day]
-    @time = params[:time]
     @teacher_id = params[:teacher_id]
-    @start_time = Time.zone.parse(@day + " " + @time + " " + "JST")
+    @start_time = Time.zone.parse(params[:day] + " " + params[:time] + " " + "JST")
     @end_time = @start_time + 90.minutes
   end
 
@@ -52,6 +50,6 @@ class ReservationsController < ApplicationController
 
   private
   def reservation_params
-    params.require(:reservation).permit(:day, :time, :user_id, :teacher_id, :start_time, :end_time)
+    params.require(:reservation).permit(:user_id, :teacher_id, :start_time, :end_time)
   end
 end
