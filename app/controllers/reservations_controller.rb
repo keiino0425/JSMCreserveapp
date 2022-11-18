@@ -1,12 +1,13 @@
 class ReservationsController < ApplicationController
-  before_action :authenticate_user!, except: [:teacher_index, :teacher_new, :teacher_create]
+  before_action :authenticate_user!, except: [:teacher_index, :teacher_new, :teacher_show, :teacher_create]
   def index
     @reservations = Reservation.all.where("start_time >= ?", Date.current).where("start_time < ?", Date.current >> 3).where(teacher_id: params[:teacher_id]).order(start_time: :desc)
     @teacher = Teacher.find(params[:teacher_id])
   end
 
   def teacher_index
-    @reservations = Reservation.all.where("day >= ?", Date.current).where("day < ?", Date.current >> 3).where(teacher_id: current_teacher.id).order(day: :desc)
+    @reservation = Reservation.new
+    @reservations = Reservation.all.where("start_time >= ?", Date.current).where("start_time < ?", Date.current >> 3).where(teacher_id: current_teacher.id).order(start_time: :desc)
     @teacher = Teacher.find(current_teacher.id)
   end
 
@@ -24,15 +25,14 @@ class ReservationsController < ApplicationController
   end
 
   def teacher_new
-    @teacher = current_teacher
-    @reservation = Reservation.new
-    @day = params[:day]
-    @time = params[:time]
-    @start_time = Time.zone.parse(@day + " " + @time + " " + "JST")
-    @end_time = @start_time + 90.minutes
+    @reservation = Reservation.new(reservation_teacher_params)
   end
 
   def show
+    @reservation = Reservation.find(params[:id])
+  end
+
+  def teacher_show
     @reservation = Reservation.find(params[:id])
   end
 
@@ -46,10 +46,20 @@ class ReservationsController < ApplicationController
   end
 
   def teacher_create
+    @reservation = Reservation.new(reservation_teacher_params)
+    if @reservation.save
+      redirect_to "/teachers/#{@reservation.teacher_id}/reservations/#{@reservation.id}"
+    else
+      render :teacher_new
+    end
   end
 
   private
   def reservation_params
     params.require(:reservation).permit(:user_id, :teacher_id, :start_time, :end_time)
+  end
+
+  def reservation_teacher_params
+    params.require(:reservation).permit(:teacher_id, :start_time, :end_time)
   end
 end

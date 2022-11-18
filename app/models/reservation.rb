@@ -1,6 +1,5 @@
 class Reservation < ApplicationRecord
   belongs_to :user, optional: true
-  validates :user, presence: true, if: :user_id?
   belongs_to :teacher
   def self.reservations_after_three_month
     # 今日から3ヶ月先までのデータを取得
