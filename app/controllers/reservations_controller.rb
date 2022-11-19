@@ -47,6 +47,7 @@ class ReservationsController < ApplicationController
   def create
     @reservation = Reservation.new(reservation_params)
     if @reservation.save
+      UserMailer.with(reservation: @reservation).reservation_email.deliver_later
       redirect_to user_teacher_reservation_path(@reservation.user_id, @reservation.teacher_id, @reservation.id)
     else
       render :new
