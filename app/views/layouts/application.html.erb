@@ -27,12 +27,12 @@
 <% if teacher_signed_in? %>
   <ul>
   <li><%= link_to "講師マイページ", teacher_path(:id) %></li>
-  <li><%= link_to "日程管理", teacher_path(:id) %></li>
+  <li><%= link_to "日程管理", teacher_reservations_index_path(:id) %></li>
   </ul>
 <% else %>
   <ul>
   <li><%= link_to "マイページ", user_path(:id) %></li>
-  <li><%= link_to "カリキュラム予約", user_path(:id) %></li>
+  <li><%= link_to "カリキュラム予約", user_choice_path(:user_id) %></li>
   <li><%= link_to "e-ラーニング", user_path(:id) %></li>
   </ul>
 <% end %>
@@ -50,8 +50,12 @@
 <div id="contents">
 
 <main>
+<% flash.each do |message_type, message| %>
+  <%= message %>
+<% end %>
 <div class="notifications">
   <div class="notice"><%= notice %></div>
+  <div class="alert"><%= alert %></div>
 </div>
 <%= yield %>
 
@@ -74,7 +78,7 @@
 <!--/#container-->
 
 <!--スライドショー-->
-<div id="mainimg"><%= image_tag 'main.jpeg', alt:'メイン画像' %></div>
+<div id="mainimg"><%= image_tag '' %></div>
 
 <!--jQueryの読み込み-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

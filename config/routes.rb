@@ -7,7 +7,17 @@ Rails.application.routes.draw do
     sessions:      'users/sessions',
     registrations: 'users/registrations'
   }
-  resources :users
-  resources :teachers
+  resources :users do
+    resources :teachers do
+      resources :reservations
+    end
+    get '/choice', to: 'reservations#choice'
+  end
+  resources :teachers do
+    get '/reservations/index', to: 'reservations#teacher_index'
+    post '/reservations/index', to: 'reservations#teacher_create'
+    post '/reservations/new', to: 'reservations#teacher_new'
+    get '/reservations/:id', to: 'reservations#teacher_show'
+  end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
