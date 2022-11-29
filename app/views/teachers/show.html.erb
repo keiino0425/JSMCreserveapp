@@ -21,7 +21,8 @@
 </dl>
 
 </section>
-
-<%= link_to destroy_teacher_session_path, method: :delete do %>
-  <span>ログアウト</span>
+<div class="btn">
+<%= button_to destroy_teacher_session_path, method: :delete do %>
+  <a>ログアウト
+</div>
 <% end %>
