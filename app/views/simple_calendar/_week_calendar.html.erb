@@ -40,9 +40,9 @@
                 <% if current_page?(action: "teacher_index") %>
                   <%= '○' %>
                 <% else %>
-                <%= link_to new_user_teacher_reservation_path(current_user, @teacher.id, day: day, time: time) do %>
-                  <%= '○' %>
-                <% end %>
+                  <%= link_to new_user_teacher_reservation_path(current_user, @teacher.id, day: day, time: time) do %>
+                    <%= '○' %>
+                  <% end %>
                 <% end %>
               <% end %>
               </td>
