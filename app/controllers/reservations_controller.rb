@@ -1,5 +1,5 @@
 class ReservationsController < ApplicationController
-  before_action :authenticate_user!, except: [:teacher_index, :teacher_new, :teacher_show, :teacher_create]
+  before_action :authenticate_user!, except: [:teacher_index, :teacher_new, :teacher_show, :teacher_create, :teacher_destroy]
   def index
     @reservations = Reservation.all.where("start_time >= ?", Date.current).where("start_time < ?", Date.current >> 3).where(teacher_id: params[:teacher_id]).order(start_time: :desc)
     @teacher = Teacher.find(params[:teacher_id])
@@ -74,6 +74,16 @@ class ReservationsController < ApplicationController
       redirect_to user_path(current_user.id)
     else
       render "users/show"
+    end
+  end
+
+  def teacher_destroy
+    @reservation = Reservation.find(params[:id])
+    if @reservation.destroy
+      flash[:success] = "講師の予定を削除しました。"
+      redirect_to teacher_reservations_index_path(current_teacher.id)
+    else
+      render teacher_index_path
     end
   end
 
