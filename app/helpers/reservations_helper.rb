@@ -26,6 +26,14 @@ module ReservationsHelper
             ]
   end
 
+  def all_day_start_time(day)
+    start_time = Time.zone.parse(day.to_s + " " + "9:00" + " " + "JST")
+  end
+
+  def all_day_end_time(day)
+    end_time = Time.zone.parse(day.to_s + " " + "20:30" + " " + "JST")
+  end
+
   def check_reservation(reservations, day, time)
     result = false
     reservations_count = reservations.count
