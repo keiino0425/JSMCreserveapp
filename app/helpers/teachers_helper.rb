@@ -3,4 +3,9 @@ module TeachersHelper
     user = User.find(reservation.user_id)
     return user.user_name
   end
+
+  def user_address(reservation)
+    user = User.find(reservation.user_id)
+    return user.user_address
+  end
 end

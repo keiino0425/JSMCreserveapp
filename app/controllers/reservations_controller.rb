@@ -104,7 +104,7 @@ class ReservationsController < ApplicationController
 
   private
   def reservation_params
-    params.require(:reservation).permit(:user_id, :teacher_id, :start_time, :end_time)
+    params.require(:reservation).permit(:user_id, :teacher_id, :start_time, :end_time, :address_select)
   end
 
   def reservation_teacher_params
