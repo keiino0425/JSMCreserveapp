@@ -1,4 +1,6 @@
 class TempReservation < ApplicationRecord
+  belongs_to :user, optional: true
+  belongs_to :teacher
   def self.check_reservation_day(start_time)
     if start_time < Date.current
       return "過去の日付は選択できません。正しい日付を選択してください。"

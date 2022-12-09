@@ -3,6 +3,7 @@ class Teacher < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   mount_uploader :teacher_img, ProfileUploader
   has_many :reservations, dependent: :destroy
+  has_many :temp_reservations, dependent: :destroy
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 end
