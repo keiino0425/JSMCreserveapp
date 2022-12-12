@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_01_043628) do
+ActiveRecord::Schema.define(version: 2022_12_12_062213) do
 
   create_table "reservations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2022_12_01_043628) do
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "end_time", null: false
     t.boolean "address_select", default: true, null: false
+    t.bigint "temp_reservation_id", null: false
   end
 
   create_table "teachers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
