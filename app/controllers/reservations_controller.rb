@@ -1,5 +1,6 @@
 class ReservationsController < ApplicationController
-  before_action :authenticate_user!, except: [:teacher_index, :teacher_new, :teacher_show, :teacher_create, :teacher_destroy, :all_day_new]
+  before_action :authenticate_user!, except: [:teacher_index, :new, :teacher_new, :teacher_show, :create, :teacher_create, :teacher_destroy, :all_day_new]
+  before_action :authenticate_teacher!, only: [:new, :create]
   def index
     @reservations = Reservation.all.where("start_time >= ?", Date.current).where("start_time < ?", Date.current >> 3).where(teacher_id: params[:teacher_id]).order(start_time: :desc)
     @teacher = Teacher.find(params[:teacher_id])
@@ -16,16 +17,12 @@ class ReservationsController < ApplicationController
   end
 
   def new
-    @user = current_user
+    @user = User.find(params[:user_id])
     @teacher = Teacher.find(params[:teacher_id])
     @reservation = Reservation.new
-    @teacher_id = params[:teacher_id]
-    @start_time = Time.zone.parse(params[:day] + " " + params[:time] + " " + "JST")
-    @end_time = @start_time + 90.minutes
-    message = Reservation.check_reservation_day(@start_time)
-    if !!message
-      redirect_to user_teacher_reservations_path(@user.id, @teacher.id), flash: { alert: message }
-    end
+    @start_time = Time.zone.parse(params[:start_time])
+    @end_time = Time.zone.parse(params[:end_time])
+    @address_select = params[:address_select]
   end
 
   def teacher_new
@@ -58,7 +55,7 @@ class ReservationsController < ApplicationController
     @reservation = Reservation.new(reservation_params)
     if @reservation.save
       UserMailer.with(reservation: @reservation).reservation_email.deliver_later
-      redirect_to user_teacher_reservation_path(@reservation.user_id, @reservation.teacher_id, @reservation.id)
+      redirect_to teacher_path(@reservation.teacher_id)
     else
       flash.now[:alert] = "予約が登録できませんでした。"
       render :new

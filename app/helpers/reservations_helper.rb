@@ -48,4 +48,12 @@ module ReservationsHelper
     end
     return result
   end
+  
+  def address(address_select)
+    if address_select
+      @teacher.teacher_address
+    else
+      @user.user_address
+    end
+  end
 end
