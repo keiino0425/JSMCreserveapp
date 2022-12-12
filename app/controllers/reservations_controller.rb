@@ -1,6 +1,6 @@
 class ReservationsController < ApplicationController
-  before_action :authenticate_user!, except: [:teacher_index, :new, :teacher_new, :teacher_show, :create, :teacher_create, :teacher_destroy, :all_day_new]
-  before_action :authenticate_teacher!, only: [:new, :create]
+  before_action :authenticate_user!, only: [:index, :choice, :destroy]
+  before_action :authenticate_teacher!, only: [:teacher_index, :new, :teacher_new, :all_day_new, :create, :teacher_create, :teacher_destroy]
   def index
     @reservations = Reservation.all.where("start_time >= ?", Date.current).where("start_time < ?", Date.current >> 3).where(teacher_id: params[:teacher_id]).order(start_time: :desc)
     @teacher = Teacher.find(params[:teacher_id])
@@ -41,14 +41,6 @@ class ReservationsController < ApplicationController
     if !!message
       redirect_to teacher_reservations_index_path(current_teacher.id), flash: { alert: message }
     end
-  end
-
-  def show
-    @reservation = Reservation.find(params[:id])
-  end
-
-  def teacher_show
-    @reservation = Reservation.find(params[:id])
   end
 
   def create
