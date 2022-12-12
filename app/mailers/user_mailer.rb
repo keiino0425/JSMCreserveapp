@@ -1,5 +1,5 @@
 class UserMailer < ApplicationMailer
-  default from: 'no-reply@spaschool.jp'
+  default from: '"JSMC事務局" <no-reply@spaschool.jp>'
 
   def temp_reservation_delete_email
     @user = params[:user]
