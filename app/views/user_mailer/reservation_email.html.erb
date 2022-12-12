@@ -1,0 +1,13 @@
+<%= @user.user_name %>さん、新規予約が登録されました。<br>
+
+講師 <%= @teacher.teacher_name %>　様<br>
+開始時間 <%= l @reservation.start_time, format: :short %><br>
+実施場所 
+<% if @reservation.address_select? %>
+  <%= @teacher.teacher_address %>
+<% else %>
+  <%= @user.user_address %>
+<% end %>
+<br>
+
+よろしくお願いします。
