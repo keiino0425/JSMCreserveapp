@@ -73,6 +73,10 @@ class ReservationsController < ApplicationController
     @user = User.find(@reservation.user_id)
     @teacher = Teacher.find(@reservation.teacher_id)
     @start_time = @reservation.start_time
+    message = Reservation.check_delete(@start_time)
+    if !!message
+      redirect_to user_path(current_user.id), flash: { alert: message } and return
+    end
     if @reservation.destroy
       TeacherMailer.with(user: @user, teacher: @teacher, start_time: @start_time).reservation_delete_email.deliver_later
       flash[:success] = "予約を削除しました。"
