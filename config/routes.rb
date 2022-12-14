@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get '/', to: 'users#show'
   devise_for :teachers, controllers: {
     sessions:      'teachers/sessions',
     registrations: 'teachers/registrations'
