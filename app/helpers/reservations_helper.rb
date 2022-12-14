@@ -37,15 +37,28 @@ module ReservationsHelper
   def check_reservation(reservations, day, time)
     result = false
     reservations_count = reservations.count
+    select_time = Time.zone.parse(day.to_s + " " + time + " " + "JST")
+    later_time = select_time + 89.minutes
     if reservations_count > 1
       reservations.each do |reservation|
-        result = reservation[:start_time] <= Time.zone.parse(day.to_s + " " + time + " " + "JST") && Time.zone.parse(day.to_s + " " + time + " " + "JST") < reservation[:end_time]
+        result = reservation[:start_time] <= select_time && select_time < reservation[:end_time]
         return result if result
       end
     elsif reservations_count == 1
-      result = reservations[0][:start_time] <= Time.zone.parse(day.to_s + " " + time + " " + "JST") && Time.zone.parse(day.to_s + " " + time + " " + "JST") < reservations[0][:end_time]
+      result = reservations[0][:start_time] <= select_time && select_time < reservations[0][:end_time]
       return result if result
     end
+
+    if reservations_count > 1
+      reservations.each do |reservation|
+        result = reservation[:start_time] <= later_time && later_time < reservation[:end_time]
+        return result if result
+      end
+    elsif reservations_count == 1
+      result = reservations[0][:start_time] <= later_time && later_time < reservations[0][:end_time]
+      return result if result
+    end
+
     return result
   end
   
