@@ -3,6 +3,8 @@
     <%= link_to "先週", calendar.url_for_previous_view %>
     <%= link_to "来週", calendar.url_for_next_view %>
     <% reservations = Reservation.where(teacher_id: @teacher.id).reservations_after_three_month %>
+    <% user_reservations = Reservation.where(teacher_id: @teacher.id).where.not(user_id: nil).reservations_after_three_month %>
+    <% teacher_reservations = Reservation.where(teacher_id: @teacher.id).where(user_id: nil).reservations_after_three_month %>
   </div>
 
   <table class="table table-striped">
@@ -24,7 +26,13 @@
               <% if defined?(Haml) && respond_to?(:block_is_haml?) && block_is_haml?(passed_block) %>
                 <% capture_haml(day, sorted_events.fetch(day, []), &passed_block) %>
               <% else %>
-                <% passed_block.call day, sorted_events.fetch(day, []) %>
+                <% if current_page?(action: "teacher_index") %>
+                  <%= link_to teacher_reservations_all_day_new_path(current_teacher, start_time: all_day_start_time(day), end_time: all_day_end_time(day)) do %>
+                    <% passed_block.call day, sorted_events.fetch(day, []) %>
+                  <% end %>
+                  <% else %>
+                    <% passed_block.call day, sorted_events.fetch(day, []) %>
+                <% end %>
               <% end %>
             <% end %>
           <% end %>
@@ -34,16 +42,19 @@
             <td><%= time %></td>
             <% week.each do |day| %>
               <td>
-              <% if check_reservation(reservations, day, time) %>
-                <%= '×' %>
-              <% else %>
+              <% if check_reservation(user_reservations, day, time) %>
+                <%= '×' %> 
+              <% elsif check_reservation(teacher_reservations, day, time) %>
                 <% if current_page?(action: "teacher_index") %>
-                  <%= '○' %>
+                  <% this_reservation = Reservation.find_by('start_time <= ? and end_time > ?', Time.zone.parse(day.to_s + " " + time + " " + "JST"), Time.zone.parse(day.to_s + " " + time + " " + "JST")) %>
+                  <%= button_to '○', destroy_reservation_path(this_reservation.id), method: :delete %>
                 <% else %>
-                  <%= link_to new_user_teacher_reservation_path(current_user, @teacher.id, day: day, time: time) do %>
+                  <%= link_to new_user_teacher_temp_reservation_path(current_user, @teacher.id, day: day, time: time) do %>
                     <%= '○' %>
                   <% end %>
                 <% end %>
+              <% else %>
+                <%= '×' %>
               <% end %>
               </td>
             <% end %>

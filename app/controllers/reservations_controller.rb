@@ -1,5 +1,6 @@
 class ReservationsController < ApplicationController
-  before_action :authenticate_user!, except: [:teacher_index, :teacher_new, :teacher_show, :teacher_create]
+  before_action :authenticate_user!, only: [:index, :choice, :destroy]
+  before_action :authenticate_teacher!, only: [:teacher_index, :new, :teacher_new, :all_day_new, :create, :teacher_create, :teacher_destroy]
   def index
     @reservations = Reservation.all.where("start_time >= ?", Date.current).where("start_time < ?", Date.current >> 3).where(teacher_id: params[:teacher_id]).order(start_time: :desc)
     @teacher = Teacher.find(params[:teacher_id])
@@ -16,16 +17,13 @@ class ReservationsController < ApplicationController
   end
 
   def new
-    @user = current_user
+    @user = User.find(params[:user_id])
     @teacher = Teacher.find(params[:teacher_id])
     @reservation = Reservation.new
-    @teacher_id = params[:teacher_id]
-    @start_time = Time.zone.parse(params[:day] + " " + params[:time] + " " + "JST")
-    @end_time = @start_time + 90.minutes
-    message = Reservation.check_reservation_day(@start_time)
-    if !!message
-      redirect_to user_teacher_reservations_path(@user.id, @teacher.id), flash: { alert: message }
-    end
+    @temp_reservation = TempReservation.find(params[:temp_reservation_id])
+    @start_time = Time.zone.parse(params[:start_time])
+    @end_time = Time.zone.parse(params[:end_time])
+    @address_select = params[:address_select]
   end
 
   def teacher_new
@@ -36,20 +34,25 @@ class ReservationsController < ApplicationController
     end
   end
 
-  def show
-    @reservation = Reservation.find(params[:id])
-  end
-
-  def teacher_show
-    @reservation = Reservation.find(params[:id])
+  def all_day_new
+    @reservation = Reservation.new
+    @start_time = Time.zone.parse(params[:start_time])
+    @end_time = Time.zone.parse(params[:end_time])
+    message = Reservation.check_reservation_day(@start_time)
+    if !!message
+      redirect_to teacher_reservations_index_path(current_teacher.id), flash: { alert: message }
+    end
   end
 
   def create
     @reservation = Reservation.new(reservation_params)
     if @reservation.save
+      @temp_reservation = TempReservation.find(@reservation.temp_reservation_id)
+      @temp_reservation.destroy
       UserMailer.with(reservation: @reservation).reservation_email.deliver_later
-      redirect_to user_teacher_reservation_path(@reservation.user_id, @reservation.teacher_id, @reservation.id)
+      redirect_to teacher_path(@reservation.teacher_id)
     else
+      flash.now[:alert] = "予約が登録できませんでした。"
       render :new
     end
   end
@@ -57,8 +60,10 @@ class ReservationsController < ApplicationController
   def teacher_create
     @reservation = Reservation.new(reservation_teacher_params)
     if @reservation.save
-      redirect_to "/teachers/#{@reservation.teacher_id}/reservations/#{@reservation.id}"
+      flash[:success] = "講師の予定を登録しました。"
+      redirect_to teacher_reservations_index_path(current_teacher.id)
     else
+      flash.now[:alert] = "予定が登録できませんでした。"
       render :teacher_new
     end
   end
@@ -68,18 +73,34 @@ class ReservationsController < ApplicationController
     @user = User.find(@reservation.user_id)
     @teacher = Teacher.find(@reservation.teacher_id)
     @start_time = @reservation.start_time
+    message = Reservation.check_delete(@start_time)
+    if !!message
+      redirect_to user_path(current_user.id), flash: { alert: message } and return
+    end
     if @reservation.destroy
-      UserMailer.with(user: @user, teacher: @teacher, start_time: @start_time).reservation_delete_email.deliver_later
+      TeacherMailer.with(user: @user, teacher: @teacher, start_time: @start_time).reservation_delete_email.deliver_later
       flash[:success] = "予約を削除しました。"
       redirect_to user_path(current_user.id)
     else
+      flash.now[:alert] = "予約が削除できませんでした。"
       render "users/show"
+    end
+  end
+
+  def teacher_destroy
+    @reservation = Reservation.find(params[:id])
+    if @reservation.destroy
+      flash[:success] = "講師の予定を削除しました。"
+      redirect_to teacher_reservations_index_path(current_teacher.id)
+    else
+      flash.now[:alert] = "講師の予定が削除できませんでした。"
+      render teacher_index_path
     end
   end
 
   private
   def reservation_params
-    params.require(:reservation).permit(:user_id, :teacher_id, :start_time, :end_time)
+    params.require(:reservation).permit(:user_id, :teacher_id, :temp_reservation_id, :start_time, :end_time, :address_select)
   end
 
   def reservation_teacher_params
