@@ -28,7 +28,8 @@ class Reservation < ApplicationRecord
 
   def self.check_delete(start_time)
     day_before = (start_time - 1.days).to_date
-    deadline = Time.zone.parse('day_before.strftime("%Y-%m-%d") 18:00:00')
+    s = day_before.strftime("%Y-%m-%d") + " 18:00:00"
+    deadline = Time.zone.parse(s)
     if deadline <= Time.zone.now
       return "受講前日の18時以降の予約取消はキャンセル料が発生致します。恐れ入りますがJSMC事務局までキャンセルのご連絡をお願い致します。" 
     end
