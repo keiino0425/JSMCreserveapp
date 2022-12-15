@@ -21,8 +21,8 @@
       <%= current_user.user_address %>
     <% end %>
   </dd>
-  <dt>仮予約を取り消す</dt>
-  <dd>
+  <dt class="line">仮予約を取り消す</dt>
+  <dd class="line">
     <div class="btn">
     <%= button_to "削除", user_teacher_temp_reservation_path(@user.id, temp_reservation.teacher_id, temp_reservation.id), method: :delete, data: { confirm: "削除してよろしいですか？", commit: "削除する", cancel: "やめる", title: "ご確認ください" } %>
     </div>
@@ -54,8 +54,8 @@
       <%= current_user.user_address %>
     <% end %>
   </dd>
-  <dt>予約を取り消す</dt>
-  <dd>
+  <dt class="line">予約を取り消す</dt>
+  <dd class="line">
     <div class="btn">
     <%= button_to "削除", user_teacher_reservation_path(@user.id, user_reservation.teacher_id, user_reservation.id), method: :delete, data: { confirm: "削除してよろしいですか？", commit: "削除する", cancel: "やめる", title: "ご確認ください" } %>
     </div>
