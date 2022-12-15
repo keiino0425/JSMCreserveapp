@@ -24,6 +24,14 @@ module JSMCreserveapp
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
 
+    # 日本語化の設定
+    config.i18n.default_locale = :ja
+    # タイムゾーンの変更（例)created_at カラムを取り出したときに日本時間に変換されるようになる）
+    config.time_zone = 'Asia/Tokyo'
+    initializer(:remove_action_mailbox_and_activestorage_routes, after: :add_routing_paths) { |app|
+     app.routes_reloader.paths.delete_if {|path| path =~ /activestorage/}
+     app.routes_reloader.paths.delete_if {|path| path =~ /actionmailbox/ }
+    }
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

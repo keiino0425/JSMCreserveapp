@@ -1,0 +1,76 @@
+<section class="box1">
+
+<h2><%= @teacher.teacher_name %>さんのマイページ</h2>
+
+<h3>仮予約一覧</h3>
+<dl class="show">
+<% @temp_reservations.each do |temp_reservation| %>
+  <dt>開始時間</dt>
+  <dd>
+    <%= l temp_reservation.start_time, format: :short %>            
+  </dd>
+  <dt>生徒名</dt>
+  <dd>
+    <%= check_user(temp_reservation) %>
+  </dd>
+  <dt>実施場所</dt>
+  <dd>
+    <% if temp_reservation.address_select? %>
+      <%= current_teacher.teacher_address %>
+    <% else %>
+      <%= user_address(temp_reservation) %>
+    <% end %>
+  </dd>
+  <dt>仮予約を確定させる</dt>
+  <dd>
+    <div class="btn">
+    <%= link_to "確定", new_user_teacher_reservation_path(User.find(temp_reservation.user_id).id, @teacher, temp_reservation_id: temp_reservation.id, start_time: temp_reservation.start_time, end_time: temp_reservation.end_time, address_select: temp_reservation.address_select) %>
+    </div>
+  </dd>
+  <dt class="line">仮予約を取り消す</dt>
+  <dd class="line">
+    <div class="btn">
+    <%= button_to "削除", teacher_destroy_temp_reservation_path(@teacher, temp_reservation), method: :delete, data: { confirm: "削除してよろしいですか？", commit: "削除する", cancel: "やめる", title: "ご確認ください" } %>
+    </div>
+  </dd>
+<% end %>
+<% if @temp_reservations.blank? %>
+  <dt>
+    <dd>予約はありません。</dd>
+  </dt>
+<% end %>
+</dl>
+
+<h3>予約一覧</h3>
+<dl class="show">
+<% @teacher_reservations.each do |teacher_reservation| %>
+  <dt>開始時間</dt>
+  <dd>
+    <%= l teacher_reservation.start_time, format: :short %>            
+  </dd>
+  <dt>生徒名</dt>
+  <dd>
+    <%= check_user(teacher_reservation) %>
+  </dd>
+  <dt class="line">実施場所</dt>
+  <dd class="line">
+    <% if teacher_reservation.address_select? %>
+      <%= current_teacher.teacher_address %>
+    <% else %>
+      <%= user_address(teacher_reservation) %>
+    <% end %>
+  </dd>
+<% end %>
+<% if @teacher_reservations.blank? %>
+  <dt>
+    <dd>予約はありません。</dd>
+  </dt>
+<% end %>
+</dl>
+
+</section>
+<div class="btn">
+<%= button_to destroy_teacher_session_path, method: :delete do %>
+  <a>ログアウト
+</div>
+<% end %>
