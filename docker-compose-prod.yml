@@ -12,7 +12,8 @@ services:
     networks:
       - JSMCreserveapp-network
   web:
-    build: .
+    build:
+      context: .
     volumes:
       - public-data:/JSMCreserveapp/public
       - tmp-data:/JSMCreserveapp/tmp
