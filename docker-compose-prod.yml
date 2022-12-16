@@ -13,10 +13,9 @@ services:
       - JSMCreserveapp-network
   web:
     build: .
-    command: bundle exec rails s -p 3000 -b '0.0.0.0'
     volumes:
-      - public-data:/fitO2/public
-      - tmp-data:/fitO2/tmp
+      - public-data:/JSMCreserveapp/public
+      - tmp-data:/JSMCreserveapp/tmp
     ports:
       - 80:80
     depends_on:
