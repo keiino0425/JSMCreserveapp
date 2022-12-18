@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       - image: cimg/ruby:2.7.5
-    working_directory: ~/jsmcreserevapp
+    working_directory: ~/jsmcreserveapp
     steps:
       - checkout:
           path: ~/jsmcreserveapp
