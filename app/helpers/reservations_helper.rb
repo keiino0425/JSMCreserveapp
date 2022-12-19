@@ -61,6 +61,22 @@ module ReservationsHelper
 
     return result
   end
+
+  def check_teacher_reservation(reservations, day, time)
+    result = false
+    reservations_count = reservations.count
+    select_time = Time.zone.parse(day.to_s + " " + time + " " + "JST")
+    if reservations_count > 1
+      reservations.each do |reservation|
+        result = reservation[:start_time] <= select_time && select_time < reservation[:end_time]
+        return result if result
+      end
+    elsif reservations_count == 1
+      result = reservations[0][:start_time] <= select_time && select_time < reservations[0][:end_time]
+      return result if result
+    end
+    return result
+  end
   
   def address(address_select)
     if address_select
