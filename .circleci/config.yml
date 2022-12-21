@@ -59,6 +59,18 @@ jobs:
           name: release docker image
           command: heroku container:release web -a $HEROKU_APP_NAME
       - run:
+          name: buildx build
+          command: docker buildx build . --platform linux/amd64 -t keiino/$HEROKU_APP_NAME:latest
+      - run:
+          name: docker tag
+          command: docker tag keiino/$HEROKU_APP_NAME registry.heroku.com/$HEROKU_APP_NAME/web
+      - run:
+          name: docker push
+          command: docker push registry.heroku.com/$HEROKU_APP_NAME/web
+      - run:
+          name: docker release
+          command: heroku container:release web -a $HEROKU_APP_NAME
+      - run:
           name: database setup
           command: heroku run bundle exec rake db:migrate RAILS_ENV=production -a $HEROKU_APP_NAME
 
