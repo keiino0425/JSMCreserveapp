@@ -41,39 +41,6 @@ jobs:
       - store_test_results:
           path: test_results
 
-  deploy:
-    docker:
-      - image: cimg/ruby:2.7.5
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: 20.10.6
-      - heroku/install
-      - run:
-          name: heroku login
-          command: heroku container:login
-      - run:
-          name: push docker image
-          command: heroku container:push web -a $HEROKU_APP_NAME
-      - run:
-          name: release docker image
-          command: heroku container:release web -a $HEROKU_APP_NAME
-      - run:
-          name: buildx build
-          command: docker buildx build . --platform linux/amd64 -t keiino/$HEROKU_APP_NAME:latest
-      - run:
-          name: docker tag
-          command: docker tag keiino/$HEROKU_APP_NAME registry.heroku.com/$HEROKU_APP_NAME/web
-      - run:
-          name: docker push
-          command: docker push registry.heroku.com/$HEROKU_APP_NAME/web
-      - run:
-          name: docker release
-          command: heroku container:release web -a $HEROKU_APP_NAME
-      - run:
-          name: database setup
-          command: heroku run bundle exec rake db:migrate RAILS_ENV=production -a $HEROKU_APP_NAME
-
 workflows:
   version: 2
   build_test_and_deploy:
