@@ -3,6 +3,8 @@ class TempReservation < ApplicationRecord
   belongs_to :teacher
   has_one :reservation
 
+  validates :user_id, :teacher_id, :start_time, :end_time, :address_select, presence: true
+
   def self.check_reservation_day(user_id, start_time)
     same_user_temp_reservation = TempReservation.where(user_id: user_id)
     same_user_reservation = Reservation.where(user_id: user_id)
