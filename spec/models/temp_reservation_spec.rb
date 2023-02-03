@@ -22,19 +22,19 @@ RSpec.describe TempReservation, type: :model do
     expect(temp_reservation).to be_valid
   end
   # 開始時間がなければ無効な状態であること
-  it "is invalid without an email address" do
+  it "is invalid without a start_time" do
     temp_reservation = FactoryBot.build(:temp_reservation, start_time: nil)
     temp_reservation.valid?
     expect(temp_reservation.errors[:start_time]).to include("translation missing: ja.activerecord.errors.models.temp_reservation.attributes.start_time.blank")
   end
   # 終了時間がなければ無効な状態であること
-  it "is invalid without an email address" do
+  it "is invalid without an end_time" do
     temp_reservation = FactoryBot.build(:temp_reservation, end_time: nil)
     temp_reservation.valid?
     expect(temp_reservation.errors[:end_time]).to include("translation missing: ja.activerecord.errors.models.temp_reservation.attributes.end_time.blank")
   end
   # 実施場所がなければ無効な状態であること
-  it "is invalid without an email address" do
+  it "is invalid without an address" do
     temp_reservation = FactoryBot.build(:temp_reservation, address_select: nil)
     temp_reservation.valid?
     expect(temp_reservation.errors[:address_select]).to include("translation missing: ja.activerecord.errors.models.temp_reservation.attributes.address_select.blank")
