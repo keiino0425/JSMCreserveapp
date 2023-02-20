@@ -22,6 +22,7 @@ FactoryBot.define do
       start_time { week_time }
       end_time { week_later_time }
     end
+
     #開始時間が昨日以降
     trait :start_yesterday do
       start_time { yesterday_time }
@@ -34,7 +35,7 @@ FactoryBot.define do
       end_time { today_later_time }
     end
 
-    #開始時間が3ヶ月先以降
+    #開始時間が1ヶ月先以降
     trait :start_month do
       start_time { month_time }
       end_time { month_later_time }

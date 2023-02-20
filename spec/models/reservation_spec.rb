@@ -21,20 +21,35 @@ RSpec.describe Reservation, type: :model do
   end
   # 開始時間がなければ無効な状態であること
   it "is invalid without a start_time" do
-    reservation = FactoryBot.build(:reservation, start_time: nil)
+    reservation = FactoryBot.build(:reservation, :user_reservation, start_time: nil)
     reservation.valid?
     expect(reservation.errors[:start_time]).to include("translation missing: ja.activerecord.errors.models.reservation.attributes.start_time.blank")
   end
   # 終了時間がなければ無効な状態であること
   it "is invalid without a end_time" do
-    reservation = FactoryBot.build(:reservation, end_time: nil)
+    reservation = FactoryBot.build(:reservation, :user_reservation, end_time: nil)
     reservation.valid?
     expect(reservation.errors[:end_time]).to include("translation missing: ja.activerecord.errors.models.reservation.attributes.end_time.blank")
   end
   # 実施場所がなければ無効な状態であること
   it "is invalid without an address" do
-    reservation = FactoryBot.build(:reservation, address_select: nil)
+    reservation = FactoryBot.build(:reservation, :user_reservation, address_select: nil)
     reservation.valid?
     expect(reservation.errors[:address_select]).to include("translation missing: ja.activerecord.errors.models.reservation.attributes.address_select.blank")
+  end
+  # 開始時間が昨日以前なら無効な状態であること
+  it "is invalid when start time is before yesterday" do
+    reservation = FactoryBot.build(:reservation, :start_yesterday)
+    expect(Reservation.check_reservation_day(reservation.start_time)).to include("過去の日付は選択できません。正しい日付を選択してください。")
+  end
+  # 開始時間が今日なら無効な状態であること
+  it "is invalid when start time is today" do
+    reservation = FactoryBot.build(:reservation, :start_today)
+    expect(Reservation.check_reservation_day(reservation.start_time)).to include("当日は選択できません。正しい日付を選択してください。")
+  end
+  # 開始時間が昨日以前なら無効な状態であること
+  it "is invalid when start time is three months later" do
+    reservation = FactoryBot.build(:reservation, :start_three_months)
+    expect(Reservation.check_reservation_day(reservation.start_time)).to include("3ヶ月以降の日付は選択できません。正しい日付を選択してください。")
   end
 end
