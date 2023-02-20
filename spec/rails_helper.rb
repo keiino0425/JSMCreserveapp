@@ -67,4 +67,6 @@ RSpec.configure do |config|
       FileUtils.rm_rf(Dir["#{Rails.root}/public/uploads_#{Rails.env}/"])
     end
   end
+  # コントローラスペックで Devise のテストヘルパーを使用する
+  config.include Devise::Test::ControllerHelpers, type: :controller
 end
