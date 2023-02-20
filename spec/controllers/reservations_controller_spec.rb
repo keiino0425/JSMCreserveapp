@@ -35,4 +35,37 @@ RSpec.describe ReservationsController, type: :controller do
       end
     end
   end
+  describe "#teacher_index" do
+    before do
+      @teacher = FactoryBot.create(:teacher)
+    end
+    # 認証済みの講師として
+    context "as an authenticated teacher" do
+      # 正常にレスポンスを返すこと
+      it "responds successfully" do
+        sign_in @teacher
+        get :teacher_index, params: { teacher_id: @teacher.id }
+        expect(response).to be_successful
+      end
+      # 200レスポンスを返すこと
+      it "returns a 200 response" do
+        sign_in @teacher
+        get :teacher_index, params: { teacher_id: @teacher.id }
+        expect(response).to have_http_status "200"
+      end
+    end
+    # ゲストとして
+    context "as a guest" do
+      # 302レスポンスを返すこと
+      it "returns a 302 response" do
+        get :teacher_index, params: { teacher_id: @teacher.id }
+        expect(response).to have_http_status "302"
+      end
+      # サインイン画面にリダイレクトすること
+      it "redirects to the sign-in page" do
+        get :teacher_index, params: { teacher_id: @teacher.id }
+        expect(response).to redirect_to "/teachers/sign_in"
+      end
+    end
+  end
 end
