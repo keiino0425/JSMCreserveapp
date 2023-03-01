@@ -2,6 +2,9 @@ class Reservation < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :teacher
   belongs_to :temp_reservation, optional: true
+
+  validates :teacher_id, :start_time, :end_time, :address_select, presence: true
+  
   def self.reservations_after_three_month
     # 今日から3ヶ月先までのデータを取得
     reservations = Reservation.all.where("start_time >= ?", Date.current).where("start_time < ?", Date.current >> 3).order(start_time: :desc)
