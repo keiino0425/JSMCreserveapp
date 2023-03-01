@@ -26,4 +26,6 @@ https://jsmc-machido.com/ <br >
   - 自動メール送信機能(Action mailer)
 
 # テスト
-rspecにて導入予定です。
+- rspec
+ - 単体テスト(Model)
+ - 統合テスト(System)
