@@ -27,5 +27,5 @@ https://jsmc-machido.com/ <br >
 
 # テスト
 - rspec
- - 単体テスト(Model)
- - 統合テスト(System)
+  - 単体テスト(Model)
+  - 統合テスト(System)
