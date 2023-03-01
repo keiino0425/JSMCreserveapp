@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_18_132342) do
+ActiveRecord::Schema.define(version: 2023_02_01_220004) do
 
   create_table "active_admin_comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "namespace"
@@ -84,10 +84,7 @@ ActiveRecord::Schema.define(version: 2022_12_18_132342) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "user_name", null: false
-    t.string "user_area", null: false
     t.string "curriculum", null: false
-    t.integer "curriculum_num", default: 1, null: false
-    t.boolean "video_available", default: true, null: false
     t.string "user_address", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
