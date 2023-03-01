@@ -30,10 +30,10 @@ jobs:
       - checkout:
           path: ~/jsmcreserveapp
       - ruby/install-deps
-      - run: bundle exec rake assets:precompile
       - run:
           name: Database setup
           command: bundle exec rails db:migrate
+      - run: bundle exec rake assets:precompile
       - run:
           name: rspec
           command: |
